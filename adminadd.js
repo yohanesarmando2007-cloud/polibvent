@@ -1,3 +1,41 @@
+document.getElementById("eventForm").addEventListener("submit", async (e) => {
+  e.preventDefault()
+
+  const form = e.target
+  const file = form.poster.files[0]
+  let posterData = ""
+
+  if (file) {
+    posterData = await toBase64(file)
+  } else {
+    posterData = "https://via.placeholder.com/300x200?text=Poster"
+  }
+
+  const newEvent = {
+    title: form.titleEvent.value,
+    description: form.description.value,
+    start_date: form.startDate.value,
+    end_date: form.endDate.value,
+    start_time: form.startTime.value,
+    end_time: form.endTime.value,
+    location: form.location.value,
+    poster_url: posterData,
+    status: form.status.value,
+    approval_status: "Menunggu"
+  }
+
+  const { error } = await supabase.from("events").insert([newEvent])
+  if (error) {
+    alert("Gagal menambahkan event")
+    console.error(error)
+  } else {
+    alert("Event berhasil ditambahkan!")
+    form.reset()
+    document.getElementById("posterPreview").style.display = "none"
+  }
+})
+
+
 // Base64 conversion function
 function toBase64(file) {
     return new Promise((resolve, reject) => {
