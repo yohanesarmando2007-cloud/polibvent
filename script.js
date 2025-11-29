@@ -1,3 +1,38 @@
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabaseUrl = 'https://YOUR_PROJECT.supabase.co'
+const supabaseKey = 'YOUR_PUBLIC_ANON_KEY'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+async function loadEvents() {
+  const { data, error } = await supabase
+    .from('events')
+    .select('*')
+    .eq('approval_status', 'Disetujui')
+    .eq('status', 'Aktif')
+    .order('start_date', { ascending: true })
+
+  if (error) {
+    console.error('Gagal ambil data:', error)
+    return
+  }
+
+  const container = document.getElementById("eventContainer")
+  container.innerHTML = ""
+  data.forEach(ev => {
+    const box = document.createElement("div")
+    box.className = "box"
+    box.innerHTML = `
+      <img src="${ev.poster_url || 'picture/default.jpg'}" alt="Poster">
+      <h3>${ev.title}</h3>
+      <p>${ev.description}</p>
+      <button onclick="viewEvent(${ev.id})">Detail</button>
+    `
+    container.appendChild(box)
+  })
+}
+document.addEventListener("DOMContentLoaded", loadEvents)
+
 // Base64 conversion function
 function toBase64(file) {
     return new Promise((resolve, reject) => {
