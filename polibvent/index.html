@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PolibVent - Event Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="container">
+            <div class="box-navbar">
+                <div class="logo">
+                    <img src="picture/logo event.png" alt="PolibVent Logo">
+                </div>
+                <ul class="menu">
+                    <li><a href="#home">Beranda</a></li>
+                    <li><a href="profilKami.html">Profil</a></li>
+                    <li><a href="loginadmin.html" class="login-btn">Masuk Admin</a></li>
+                </ul>
+                <i class="fas fa-bars menu-bar"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="box-hero">
+                <div class="box">
+                    <h1>Selamat Datang Di PolibVent!</h1>
+                    <p>Temukan dan ikuti beragam event seru di Politeknik Negeri Batam dari festival, seminar, hingga kompetisi menantang, semuanya ada di sini.</p>
+                    <button id="addEventBtn">Tambah Event Baru</button>
+                </div>
+                <div class="box">
+                    <img src="picture/hero festival.jpg" alt="Event Image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Event Section -->
+    <section class="event" id="events">
+        <div class="container">
+            <h2>Daftar Event</h2>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cari event...">
+                <button onclick="searchEvent()"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="box-event" id="eventContainer">
+                <!-- Events will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Event Modal -->
+    <div class="modal" id="addEventModal">
+        <div class="modal-content">
+            <h3>Tambah Event Baru</h3>
+            <form id="addEventForm">
+                <div class="form-group">
+                    <label for="title">Judul Event *</label>
+                    <input type="text" id="title" name="title" required placeholder="Masukkan judul event">
+                </div>
+                <div class="form-group">
+                    <label for="poster">Poster Event</label>
+                    <input type="file" id="poster" name="poster" accept="image/*">
+                    <img id="posterPreview" src="" style="max-width:100%; margin-top:10px; display:none; border-radius:8px;">
+                </div>
+                <div class="form-group">
+                    <label for="startDate">Tanggal Mulai *</label>
+                    <input type="date" id="startDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="endDate">Tanggal Selesai *</label>
+                    <input type="date" id="endDate" name="endDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="startTime">Waktu Mulai *</label>
+                    <input type="time" id="startTime" name="startTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="endTime">Waktu Selesai *</label>
+                    <input type="time" id="endTime" name="endTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Lokasi *</label>
+                    <input type="text" id="location" name="location" required placeholder="Masukkan lokasi event">
+                </div>
+                <div class="form-group">
+                    <label for="description">Deskripsi *</label>
+                    <textarea id="description" name="description" required placeholder="Masukkan deskripsi event" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">Simpan Event</button>
+                    <button type="button" class="btn-cancel" id="cancelAddEvent">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 PolibVent – Semua Hak Dilindungi</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

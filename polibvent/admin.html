@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--Font awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--Font Open Sans-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <!--CSS-->
+    <link rel="stylesheet" href="style.css">
+    <title>Landing Page Welcome | PolibVent</title>
+</head>
+<body>
+<header>
+    <!--Navbar-->
+    <div class="navbar">
+        <div class="container">
+            <div class="box-navbar">
+                <div class="logo">
+                    <img src="picture/logo event.png" alt="">
+                </div>
+                <ul class="menu">
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="dashboard.html">Dasbor</a></li>
+                    <li><a href="index.html" class="login-btn">Keluar</a></li>
+                </ul>
+                <i class="fa-solid fa-bars menu-bar"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!--Hero-->
+    <div class="hero">
+        <div class="container">
+            <div class="box-hero">
+                <div class="box">
+                    <h1>Selamat Datang Di PolibVent</h1>
+                    <p>Tempat dimana informasi <br>seputar event-event di Politeknik Negeri Batam</p>
+                    <a href="#event"><button>Lihat Selengkapnya</button></a>
+                </div>
+                <div class="box">
+                    <img src="picture/hero festival.jpg" alt="Tampilan Event">
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!--Profil Event-->
+<div class="event" id="event">
+    <div class="container">
+        <h2>Profil Event</h2>
+        <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Cari event...">
+                <button onclick="searchEvent()"><i class="fas fa-search"></i></button>
+        </div>
+        <div class="box-event" id="eventContainer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--JS-->
+<script src="script.js"></script>
+</body>
+</html>

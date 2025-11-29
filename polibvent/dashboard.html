@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Daftar Event</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+  <link href="dashboard.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="navbar">
+    <div class="logo">
+      <img src="picture/logo event.png" alt="Polibvent Logo">
+    </div>
+    <ul>
+      <!-- Tombol Beranda dihapus -->
+      <li><a href="index.html" class="out-btn">Keluar</a></li>
+    </ul>
+  </div>
+
+  <main class="container">
+    <h2>Daftar Event (Admin Mode)</h2>
+
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Cari event...">
+      <button onclick="searchEvent()"><i class="fas fa-search"></i></button>
+    </div>
+
+    <div class="actions">
+      <a href="adminadd.html" class="add-btn">+ Tambah Event</a>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Poster</th>
+          <th>Judul</th>
+          <th>Tanggal</th>
+          <th>Waktu</th>
+          <th>Lokasi</th>
+          <th>Status</th>
+          <th>Persetujuan</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+
+      <tbody id="eventTable"></tbody>
+    </table>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

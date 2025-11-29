@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Event Kampus</title>
+  <link rel="stylesheet" href="detailevent.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo"><img src="picture/logo event.png" alt="Logo Event"></div>
+    <a href="admin.html" class="btn-home">Beranda</a>
+    <a href="index.html" class="btn-keluar">Keluar</a>
+  </header>
+
+  <!-- Konten Utama -->
+  <main class="container">
+    <section class="info-event">
+      <h1 id="eventTitle">Judul Acara</h1>
+
+      <p><strong>Tanggal</strong><br>
+        <span id="eventDate">12/12/2025 - 01/01/2026</span>
+      </p>
+
+      <p><strong>Waktu</strong><br>
+        <span id="eventTime">08:00 - 16:00</span>
+      </p>
+
+      <p><strong>Lokasi</strong><br>
+        <span id="eventLocation">Aula Gedung A, Kampus X</span>
+      </p>
+
+      <p><strong>Status</strong><br>
+        <span id="eventStatus">Aktif</span>
+      </p>
+
+      <p><strong>Deskripsi</strong><br>
+        <span id="eventDescription">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry...
+        </span>
+      </p>
+    </section>
+
+    <aside class="poster-container">
+      <img id="eventPoster" src="picture/default.jpg" alt="Poster Event" class="poster-img">
+    </aside>
+  </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const selectedId = localStorage.getItem("selectedEventId");
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+
+    if (!selectedId || events.length === 0) return;
+
+    const event = events.find(ev => String(ev.id) === String(selectedId));
+    if (!event) return;
+
+    // Isi konten
+    document.getElementById("eventTitle").textContent = event.titleEvent || "-";
+    document.getElementById("eventDate").textContent = formatDate(event.startDate) + " - " + formatDate(event.endDate);
+    document.getElementById("eventTime").textContent = (event.startTime || "-") + " - " + (event.endTime || "-");
+    document.getElementById("eventLocation").textContent = event.location || "-";
+    document.getElementById("eventStatus").textContent = event.status || "-";
+    document.getElementById("eventDescription").textContent = event.description || "-";
+
+    // Gambar poster
+    const posterImg = document.getElementById("eventPoster");
+    if (event.poster && event.poster.startsWith("data:image")) {
+      posterImg.src = event.poster;
+    } else {
+      posterImg.src = "picture/default.jpg";
+    }
+
+    // Format tanggal
+    function formatDate(dateStr) {
+      if (!dateStr) return "-";
+      const date = new Date(dateStr);
+      return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+    }
+  });
+</script>
+
+</body>
+</html>

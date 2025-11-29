@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Event Kampus</title>
+  <link rel="stylesheet" href="detaileventm.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="logo"><img src="picture/logo event.png" alt="Logo Event"></div>
+    <div class="header-buttons">
+      <a href="index.html" class="btn-home">Beranda</a>
+      <button id="editEventBtn" class="btn-edit">Edit Event</button>
+      <a href="loginadmin.html" class="btn-masuk">Masuk</a>
+    </div>
+  </header>
+
+  <!-- Konten Utama -->
+  <main class="container">
+    <section class="info-event">
+      <h1 id="eventTitle">Memuat Event...</h1>
+
+      <p><strong>Tanggal</strong><br>
+        <span id="eventDate">-</span>
+      </p>
+
+      <p><strong>Waktu</strong><br>
+        <span id="eventTime">-</span>
+      </p>
+
+      <p><strong>Lokasi</strong><br>
+        <span id="eventLocation">-</span>
+      </p>
+
+      <p><strong>Status</strong><br>
+        <span id="eventStatus">-</span>
+      </p>
+
+      <p><strong>Deskripsi</strong><br>
+        <span id="eventDescription">Memuat deskripsi event...</span>
+      </p>
+    </section>
+
+    <aside class="poster-container">
+      <img id="eventPoster" src="picture/default.jpg" alt="Poster Event" class="poster-img">
+    </aside>
+  </main>
+
+  <!-- Edit Event Modal -->
+  <div class="modal" id="editEventModal">
+    <div class="modal-content">
+      <h3><i class="fas fa-edit"></i> Edit Event</h3>
+      <form id="editEventForm">
+        <input type="hidden" id="editEventId" name="id">
+        
+        <div class="form-group">
+          <label for="editTitle">Judul Event *</label>
+          <input type="text" id="editTitle" name="title" required placeholder="Masukkan judul event">
+        </div>
+        
+        <div class="form-group">
+          <label for="editPoster">Poster Event</label>
+          <input type="file" id="editPoster" name="poster" accept="image/*">
+          <img id="editPosterPreview" src="" style="max-width:100%; margin-top:10px; display:none; border-radius:8px;">
+          <small>Kosongkan jika tidak ingin mengubah poster</small>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editStartDate">Tanggal Mulai *</label>
+            <input type="date" id="editStartDate" name="start_date" required>
+          </div>
+          <div class="form-group">
+            <label for="editEndDate">Tanggal Selesai *</label>
+            <input type="date" id="editEndDate" name="end_date" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="editStartTime">Waktu Mulai *</label>
+            <input type="time" id="editStartTime" name="start_time" required>
+          </div>
+          <div class="form-group">
+            <label for="editEndTime">Waktu Selesai *</label>
+            <input type="time" id="editEndTime" name="end_time" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="editLocation">Lokasi *</label>
+          <input type="text" id="editLocation" name="location" required placeholder="Masukkan lokasi event">
+        </div>
+        
+        <div class="form-group">
+          <label for="editDescription">Deskripsi *</label>
+          <textarea id="editDescription" name="description" required placeholder="Masukkan deskripsi event" rows="4"></textarea>
+        </div>
+        
+        <!-- HANYA STATUS YANG BISA DIEDIT USER -->
+        <div class="form-group">
+          <label for="editStatus">Status</label>
+          <select id="editStatus" name="status">
+            <option value="Aktif">Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
+          </select>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">
+            <i class="fas fa-save"></i> Simpan Perubahan
+          </button>
+          <button type="button" class="btn-cancel" id="cancelEditEvent">
+            <i class="fas fa-times"></i> Batal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<script>
+  // Base64 conversion function
+  function toBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  let currentEvent = null;
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    const selectedId = localStorage.getItem("selectedEventId");
+    
+    if (!selectedId) {
+      showError("Tidak ada event yang dipilih.");
+      return;
+    }
+
+    console.log("Loading event detail for ID:", selectedId);
+
+    // Initialize modal functionality
+    initializeEditModal();
+
+    try {
+      // Coba load dari database API dulu
+      const response = await fetch(`api_events.php?id=${selectedId}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const event = await response.json();
+      
+      if (event && event.id) {
+        console.log("Event loaded from database:", event);
+        currentEvent = event;
+        displayEventData(event);
+      } else {
+        throw new Error("Event tidak ditemukan di database");
+      }
+      
+    } catch (error) {
+      console.error('Error loading from database:', error);
+      // Fallback ke localStorage
+      loadFromLocalStorage(selectedId);
+    }
+  });
+
+  // Initialize edit modal
+  function initializeEditModal() {
+    const editEventModal = document.getElementById("editEventModal");
+    const editEventForm = document.getElementById("editEventForm");
+    const editEventBtn = document.getElementById("editEventBtn");
+    const cancelEditEvent = document.getElementById("cancelEditEvent");
+
+    // Show edit event modal
+    if (editEventBtn && editEventModal) {
+      editEventBtn.addEventListener("click", () => {
+        if (!currentEvent) {
+          alert("Data event belum dimuat. Silakan refresh halaman.");
+          return;
+        }
+        populateEditForm(currentEvent);
+        editEventModal.style.display = "flex";
+      });
+    }
+
+    // Hide edit event modal
+    if (cancelEditEvent && editEventModal) {
+      cancelEditEvent.addEventListener("click", () => {
+        editEventModal.style.display = "none";
+        editEventForm.reset();
+        document.getElementById("editPosterPreview").style.display = "none";
+      });
+    }
+
+    // Preview image for edit form
+    const editPosterInput = document.getElementById("editPoster");
+    if (editPosterInput) {
+      editPosterInput.addEventListener("change", function(e) {
+        const file = e.target.files[0];
+        const posterPreview = document.getElementById("editPosterPreview");
+        if (file && posterPreview) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            posterPreview.src = e.target.result;
+            posterPreview.style.display = "block";
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Edit event form submission
+    if (editEventForm) {
+      editEventForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        await handleEditEventForm();
+      });
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('editEventModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+        editEventForm.reset();
+        document.getElementById("editPosterPreview").style.display = 'none';
+      }
+    });
+  }
+
+  // Populate edit form with current event data
+  function populateEditForm(event) {
+    // Handle both database and localStorage field names
+    const eventTitle = event.title || event.titleEvent;
+    const eventDescription = event.description;
+    const eventStartDate = event.start_date || event.startDate;
+    const eventEndDate = event.end_date || event.endDate;
+    const eventStartTime = event.start_time || event.startTime;
+    const eventEndTime = event.end_time || event.endTime;
+    const eventLocation = event.location;
+    const eventStatus = event.status || "Aktif";
+    const eventPoster = event.poster_url || event.poster;
+
+    document.getElementById("editEventId").value = event.id;
+    document.getElementById("editTitle").value = eventTitle || "";
+    document.getElementById("editStartDate").value = eventStartDate || "";
+    document.getElementById("editEndDate").value = eventEndDate || "";
+    document.getElementById("editStartTime").value = eventStartTime || "";
+    document.getElementById("editEndTime").value = eventEndTime || "";
+    document.getElementById("editLocation").value = eventLocation || "";
+    document.getElementById("editDescription").value = eventDescription || "";
+    document.getElementById("editStatus").value = eventStatus;
+
+    // Set poster preview
+    const posterPreview = document.getElementById("editPosterPreview");
+    if (eventPoster) {
+      posterPreview.src = eventPoster;
+      posterPreview.style.display = "block";
+    } else {
+      posterPreview.style.display = "none";
+    }
+  }
+
+  // Handle edit event form submission
+  async function handleEditEventForm() {
+    const formData = new FormData(document.getElementById("editEventForm"));
+    let posterData = currentEvent.poster_url || currentEvent.poster;
+    
+    try {
+      // Convert image to base64 if new poster provided
+      const posterFile = formData.get("poster");
+      if (posterFile && posterFile.size > 0) {
+        console.log("Processing new poster upload");
+        posterData = await toBase64(posterFile);
+      }
+
+      // Create updated event object (TANPA approval_status)
+      const updatedEvent = {
+        id: formData.get("id"),
+        title: formData.get("title"),
+        description: formData.get("description"),
+        start_date: formData.get("start_date"),
+        end_date: formData.get("end_date"),
+        start_time: formData.get("start_time"),
+        end_time: formData.get("end_time"),
+        location: formData.get("location"),
+        poster_url: posterData,
+        status: formData.get("status")
+        // approval_status dihapus karena hanya admin yang bisa edit
+      };
+
+      console.log("Updated event data:", updatedEvent);
+
+      try {
+        // Update to database via API
+        const response = await fetch('api_events.php', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedEvent)
+        });
+
+        const result = await response.json();
+        console.log("Update API response:", result);
+        
+        if (result.success) {
+          // Update current event data
+          currentEvent = { ...currentEvent, ...updatedEvent };
+          
+          // Update display
+          displayEventData(currentEvent);
+          
+          // Close modal
+          document.getElementById("editEventModal").style.display = "none";
+          document.getElementById("editEventForm").reset();
+          document.getElementById("editPosterPreview").style.display = "none";
+          
+          alert("Event berhasil diupdate!");
+        } else {
+          alert("Gagal mengupdate event. Silakan coba lagi.");
+        }
+      } catch (error) {
+        console.error('Error updating event:', error);
+        // Fallback to localStorage
+        updateEventInLocalStorage(updatedEvent);
+      }
+    } catch (error) {
+      console.error('Error in edit form handling:', error);
+      alert("Terjadi kesalahan saat memproses form.");
+    }
+  }
+
+  // Fallback function for localStorage update
+  function updateEventInLocalStorage(eventData) {
+    let events = JSON.parse(localStorage.getItem("events")) || [];
+    const index = events.findIndex(ev => ev.id == eventData.id);
+
+    if (index !== -1) {
+      events[index] = {
+        ...events[index],
+        id: eventData.id,
+        titleEvent: eventData.title,
+        poster: eventData.poster_url,
+        startDate: eventData.start_date,
+        endDate: eventData.end_date,
+        startTime: eventData.start_time,
+        endTime: eventData.end_time,
+        location: eventData.location,
+        description: eventData.description,
+        status: eventData.status
+        // approval dihapus karena hanya admin yang bisa edit
+      };
+
+      localStorage.setItem("events", JSON.stringify(events));
+      currentEvent = events[index];
+      
+      // Update display
+      displayEventData(currentEvent);
+      
+      // Close modal
+      document.getElementById("editEventModal").style.display = "none";
+      document.getElementById("editEventForm").reset();
+      document.getElementById("editPosterPreview").style.display = "none";
+      
+      alert("Event berhasil diupdate (offline mode)!");
+    }
+  }
+
+  // Function to display event data
+  function displayEventData(event) {
+    // Handle both database and localStorage field names
+    const eventTitle = event.title || event.titleEvent;
+    const eventDescription = event.description;
+    const eventStartDate = event.start_date || event.startDate;
+    const eventEndDate = event.end_date || event.endDate;
+    const eventStartTime = event.start_time || event.startTime;
+    const eventEndTime = event.end_time || event.endTime;
+    const eventLocation = event.location;
+    const eventStatus = event.status;
+    const eventPoster = event.poster_url || event.poster;
+
+    // Isi konten
+    document.getElementById("eventTitle").textContent = eventTitle || "Judul tidak tersedia";
+    document.getElementById("eventDate").textContent = formatDate(eventStartDate) + " - " + formatDate(eventEndDate);
+    document.getElementById("eventTime").textContent = (eventStartTime || "-") + " - " + (eventEndTime || "-");
+    document.getElementById("eventLocation").textContent = eventLocation || "Lokasi tidak tersedia";
+    document.getElementById("eventStatus").textContent = eventStatus || "-";
+    document.getElementById("eventDescription").textContent = eventDescription || "Deskripsi tidak tersedia";
+
+    // Gambar poster
+    const posterImg = document.getElementById("eventPoster");
+    if (eventPoster) {
+      posterImg.src = eventPoster;
+      posterImg.alt = `Poster ${eventTitle}`;
+      
+      // Handle image loading errors
+      posterImg.onerror = function() {
+        console.error("Error loading poster image:", eventPoster);
+        this.src = "picture/default.jpg";
+        this.alt = "Poster default";
+      };
+    } else {
+      posterImg.src = "picture/default.jpg";
+      posterImg.alt = "Poster default";
+    }
+  }
+
+  // Fallback: Load from localStorage
+  function loadFromLocalStorage(selectedId) {
+    console.log("Trying to load from localStorage...");
+    const events = JSON.parse(localStorage.getItem("events")) || [];
+    
+    if (events.length === 0) {
+      showError("Tidak ada event yang tersedia.");
+      return;
+    }
+
+    const event = events.find(ev => String(ev.id) === String(selectedId));
+    
+    if (!event) {
+      showError("Event tidak ditemukan.");
+      return;
+    }
+
+    console.log("Event loaded from localStorage:", event);
+    currentEvent = event;
+    displayEventData(event);
+  }
+
+  // Show error message
+  function showError(message) {
+    document.getElementById("eventTitle").textContent = "Error";
+    document.getElementById("eventDescription").textContent = message;
+    
+    const elements = ['eventDate', 'eventTime', 'eventLocation', 'eventStatus'];
+    elements.forEach(id => {
+      document.getElementById(id).textContent = "-";
+    });
+    
+    console.error("Detail Event Error:", message);
+  }
+
+  // Format tanggal
+  function formatDate(dateStr) {
+    if (!dateStr) return "-";
+    
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return "-";
+      
+      return date.toLocaleDateString("id-ID", {
+        day: "numeric",
+        month: "long",
+        year: "numeric"
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return "-";
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+body {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.7)), url("picture/Hero Bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Open Sans", sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+.login-card {
+  background-color: #001bb78b;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 340px;
+  text-align: center;
+}
+
+.logo img{
+  width: 50%;
+  height: 30%;
+}
+
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+label {
+  display: block;
+  text-align: left;
+  font-size: 15px;
+  margin-top: 10px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input {
+  width: 95%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #001BB7;
+  border-radius: 10px;
+  background-color: #E9E9E9;
+  margin-bottom: 20px;
+}
+
+/* Tombol berupa <a> */
+.btn-login {
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 7px 0 7px 0;
+  background-color: #E9E9E9;
+  border: none;
+  border-radius: 10px;
+  font-size: large;
+
+}
+
+.btn-login:hover {
+  background-color: #FF8040;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel {
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+  width: 100%;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+  padding: 5px 0 5px 0;
+  background-color: #E9E9E9;
+  border: none;
+  border-radius: 10px;
+}
+
+.btn-cancel:hover {
+  background-color: #FF8040;
+  transition: all 0.3s ease;
+}

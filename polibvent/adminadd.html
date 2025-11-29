@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tambah Event — Panel Admin</title>
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="adminadd.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Tambah Event</h1>
+      <p class="lead">Isi data acara baru di bawah ini.</p>
+
+      <form id="eventForm" novalidate>
+        <div class="grid">
+          <div class="full">
+            <label for="titleEvent">Judul Acara *</label>
+            <input id="titleEvent" name="titleEvent" type="text" required placeholder="Contoh: Seminar Teknologi 2025" />
+          </div>
+
+          <div>
+            <label for="startDate">Tanggal Mulai *</label>
+            <input id="startDate" name="startDate" type="date" required />
+          </div>
+
+          <div>
+            <label for="endDate">Tanggal Selesai *</label>
+            <input id="endDate" name="endDate" type="date" required />
+          </div>
+
+          <div>
+            <label for="startTime">Waktu Mulai *</label>
+            <input id="startTime" name="startTime" type="time" required />
+          </div>
+
+          <div>
+            <label for="endTime">Waktu Selesai *</label>
+            <input id="endTime" name="endTime" type="time" required />
+          </div>
+
+          <div class="full">
+            <label for="location">Lokasi *</label>
+            <input id="location" name="location" type="text" required placeholder="Contoh: Aula Gedung A, Kampus X" />
+          </div>
+
+          <div class="full">
+            <label for="description">Deskripsi *</label>
+            <textarea id="description" name="description" rows="4" required placeholder="Tuliskan deskripsi acara di sini..."></textarea>
+          </div>
+
+          <div>
+            <label for="poster">Poster / Banner</label>
+            <div style="display:flex;gap:12px;align-items:center">
+              <input id="poster" name="poster" type="file" accept="image/*" />
+              <img id="posterPreview" class="poster-preview"
+                src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100%' height='100%' fill='%23eef2ff'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' fill='%2303496a' font-size='11'>Preview</text></svg>" alt="Pratinjau poster">
+            </div>
+          </div>
+
+          <div>
+            <label for="status">Status</label>
+            <select id="status" name="status">
+              <option value="Aktif">Aktif</option>
+              <option value="Nonaktif">Nonaktif</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a href="dashboard.html" class="ghost">Batal</a>
+          <button type="submit" class="primary">Tambah Event</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="adminadd.js"></script>
+</body>
+</html>

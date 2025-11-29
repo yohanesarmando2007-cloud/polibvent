@@ -1,0 +1,170 @@
+/* Reset dasar */
+body {
+    margin: 0;
+    font-family: "Open Sans", sans-serif;
+    background-color: #E9E9E9;
+    color: #000;
+  }
+  
+  /* HEADER */
+  .header {
+    background-color: #001BB7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    color: white;
+  }
+  
+  .logo img{
+    width: 30%;
+    height: 20%;
+  }
+  
+  /* Tombol keluar*/
+  .btn-keluar {
+    background-color: #FF8040;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-block;
+  }
+  
+  .btn-keluar:hover {
+    background-color: #b55b2d;
+    transition: all 0.3s ease;
+  }
+
+  .btn-home {
+    background-color: #FF8040;
+    color: white;
+    text-decoration: none;
+    padding: 10px 25px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-block;
+  }
+  .btn-home:hover {
+    background-color: #b55b2d;
+    transition: all 0.3s ease;
+  }
+  
+  /* KONTEN UTAMA */
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 40px 60px;
+    gap: 40px;
+    flex-wrap: wrap; /* agar responsif di layar kecil */
+  }
+  
+  /* INFO EVENT */
+  .info-event {
+    flex: 1 1 55%;
+    min-width: 300px;
+  }
+  
+  .thumbnail {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .thumbnail .box {
+    width: 30px;
+    height: 30px;
+    background-color: #d9d9d9;
+    border-radius: 4px;
+  }
+  
+  h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+  
+  p {
+    line-height: 1.6;
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+  
+  p strong {
+    font-weight: bold;
+  }
+  
+  p a {
+    color: #3429ff;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  /* POSTER EVENT */
+  .poster-container {
+    flex: 1 1 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 250px;
+  }
+  
+  .poster-img {
+    width: 100%;
+    height: auto;
+    max-width: 450px;
+    border: 3px solid #c0c0c0;
+    background-color: #d9d9d9;
+    border-radius: 6px;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  /* RESPONSIVE DESIGN */
+  @media screen and (max-width: 990px) {
+    .container {
+      flex-direction: column;
+      padding: 30px 20px;
+    }
+  
+    .info-event,
+    .poster-container {
+      width: 100%;
+    }
+  
+    .poster-container {
+      margin-top: 30px;
+    }
+  
+    h1 {
+      font-size: 22px;
+    }
+  
+    p {
+      font-size: 14px;
+    }
+  
+    .btn-keluar {
+      padding: 8px 20px;
+      font-size: 10px;
+    }
+    .btn-home {
+      padding: 8px 20px;
+      font-size: 10px;
+      margin-right: 5px;
+    }
+    .logo img {
+      width: 100px;
+      height: 20%;
+    }
+
+  }
+  
